@@ -1,0 +1,21 @@
+{
+  "endOfLine": "lf",
+  "semi": false,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "printWidth": 80,
+  "importOrderParserPlugins": [
+    "typescript",
+    "jsx",
+    "classProperties",
+    "decorators-legacy"
+  ],
+  "importOrder": ["<THIRD_PARTY_MODULES>", "@/(.*)$", "^../(.*)", "^./(.*)"],
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
+  "tailwindStylesheet": "src/index.css",
+  "tailwindFunctions": ["cn", "cva"]
+}
