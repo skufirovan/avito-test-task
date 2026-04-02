@@ -17,7 +17,7 @@ type ThemeProviderState = {
 }
 
 const COLOR_SCHEME_QUERY = "(prefers-color-scheme: dark)"
-const THEME_VALUES: Theme[] = ["dark", "light", "system"]
+const THEME_VALUES = new Set<Theme>(["dark", "light", "system"])
 
 const ThemeProviderContext = React.createContext<
   ThemeProviderState | undefined
@@ -28,11 +28,11 @@ function isTheme(value: string | null): value is Theme {
     return false
   }
 
-  return THEME_VALUES.includes(value as Theme)
+  return THEME_VALUES.has(value as Theme)
 }
 
 function getSystemTheme(): ResolvedTheme {
-  if (window.matchMedia(COLOR_SCHEME_QUERY).matches) {
+  if (globalThis.matchMedia(COLOR_SCHEME_QUERY).matches) {
     return "dark"
   }
 
@@ -41,15 +41,15 @@ function getSystemTheme(): ResolvedTheme {
 
 function disableTransitionsTemporarily() {
   const style = document.createElement("style")
-  style.appendChild(
+  style.append(
     document.createTextNode(
       "*,*::before,*::after{-webkit-transition:none!important;transition:none!important}"
     )
   )
-  document.head.appendChild(style)
+  document.head.append(style)
 
   return () => {
-    window.getComputedStyle(document.body)
+    globalThis.getComputedStyle(document.body)
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         style.remove()
@@ -108,7 +108,7 @@ export function ThemeProvider({
         nextTheme === "system" ? getSystemTheme() : nextTheme
       const restoreTransitions = disableTransitionOnChange
         ? disableTransitionsTemporarily()
-        : null
+        : undefined
 
       root.classList.remove("light", "dark")
       root.classList.add(resolvedTheme)
@@ -124,10 +124,10 @@ export function ThemeProvider({
     applyTheme(theme)
 
     if (theme !== "system") {
-      return undefined
+      return
     }
 
-    const mediaQuery = window.matchMedia(COLOR_SCHEME_QUERY)
+    const mediaQuery = globalThis.matchMedia(COLOR_SCHEME_QUERY)
     const handleChange = () => {
       applyTheme("system")
     }
@@ -158,24 +158,22 @@ export function ThemeProvider({
       }
 
       setThemeState((currentTheme) => {
-        const nextTheme =
-          currentTheme === "dark"
-            ? "light"
-            : currentTheme === "light"
-              ? "dark"
-              : getSystemTheme() === "dark"
-                ? "light"
-                : "dark"
+        const themeToggleMap: Record<string, "dark" | "light"> = {
+          dark: "light",
+          light: "dark",
+          system: getSystemTheme() === "dark" ? "light" : "dark",
+        }
 
+        const nextTheme = themeToggleMap[currentTheme]
         localStorage.setItem(storageKey, nextTheme)
         return nextTheme
       })
     }
 
-    window.addEventListener("keydown", handleKeyDown)
+    globalThis.addEventListener("keydown", handleKeyDown)
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown)
+      globalThis.removeEventListener("keydown", handleKeyDown)
     }
   }, [storageKey])
 
@@ -197,10 +195,10 @@ export function ThemeProvider({
       setThemeState(defaultTheme)
     }
 
-    window.addEventListener("storage", handleStorageChange)
+    globalThis.addEventListener("storage", handleStorageChange)
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange)
+      globalThis.removeEventListener("storage", handleStorageChange)
     }
   }, [defaultTheme, storageKey])
 
