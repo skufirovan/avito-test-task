@@ -1,5 +1,14 @@
-export function App() {
-  return <h1>Главная</h1>
-}
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
+import { AdsPage, NotFoundPage } from "./pages"
 
-export default App
+export function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to="/ads" />} />
+        <Route path="/ads" element={<AdsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </BrowserRouter>
+  )
+}
