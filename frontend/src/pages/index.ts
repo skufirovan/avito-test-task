@@ -1,2 +1,2 @@
-export { AdsPage } from "./AdsPage/AdsPage"
-export { NotFoundPage } from "./NotFoundPage/NotFoundPage"
+export { AdsPage } from "./AdsPage"
+export { NotFoundPage } from "./NotFoundPage"
