@@ -11,7 +11,7 @@ import globals from "globals"
 import tseslint from "typescript-eslint"
 
 export default defineConfig([
-  globalIgnores(["dist", "src/shared/ui"]),
+  globalIgnores(["dist", "src/components/ui"]),
   {
     files: ["**/*.{ts,tsx}"],
     plugins: {
