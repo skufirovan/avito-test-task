@@ -5,6 +5,7 @@ import type {
   Item,
   ItemUpdateIn,
 } from "@/api/types"
+import { ADS_PER_PAGE } from "@/lib/constants"
 
 export const itemsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,7 +15,7 @@ export const itemsApi = baseApi.injectEndpoints({
         params: params
           ? {
               q: params.q,
-              limit: params.limit,
+              limit: ADS_PER_PAGE,
               skip: params.skip,
               needsRevision: params.needsRevision ? "true" : undefined,
               categories: params.categories?.join(","),

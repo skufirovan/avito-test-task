@@ -1,6 +1,7 @@
 import type { ListItem } from "@/api/types"
 import { CardItem } from "./CardItem"
 import { CardItemSceleton } from "./CardItemSceleton"
+import { Typography } from "./ui/Typography"
 
 type Props = {
   items?: ListItem[]
@@ -21,7 +22,8 @@ export function ItemsList({ items, isLoading }: Props) {
     )
   }
 
-  if (!items?.length) return
+  if (!items?.length)
+    return <Typography variant="lead">Ничего не найдено</Typography>
 
   return (
     <div className={className}>

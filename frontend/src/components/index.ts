@@ -1,3 +1,7 @@
+export { AdsPagination } from "./AdsPagination"
 export { ApiErrorState } from "./ApiErrorState"
+export { FiltersSidebar } from "./FiltersSidebar"
 export { ItemsList } from "./ItemsList"
+export { SearchInput } from "./SearchInput"
+export { SortDropdown } from "./SortDropdown"
 export { ThemeProvider } from "./ThemeProvider"
