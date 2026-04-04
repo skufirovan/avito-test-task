@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom"
+import { Button } from "./ui/Button"
 import { Checkbox } from "./ui/Checkbox"
 import {
   FieldGroup,
@@ -28,6 +29,7 @@ export function FiltersSidebar() {
           newParams.delete("needsRevision")
         }
 
+        newParams.delete("page")
         return newParams
       },
       { replace: true }
@@ -63,69 +65,98 @@ export function FiltersSidebar() {
     )
   }
 
+  const handleResetFilters = () => {
+    setSearchParams(
+      (prev) => {
+        const newParams = new URLSearchParams(prev)
+
+        newParams.delete("needsRevision")
+        newParams.delete("categories")
+        newParams.delete("page")
+
+        return newParams
+      },
+      { replace: true }
+    )
+  }
+
   return (
-    <Card className="h-fit pt-4">
-      <CardContent className="px-4">
-        <FieldSet className="w-45">
-          <FieldLegend className="cursor-default">Фильтры</FieldLegend>
-          <FieldGroup className="gap-3">
-            <Field orientation="horizontal">
-              <Checkbox
-                id="auto"
-                className="cursor-pointer"
-                checked={selectedCategories.includes("auto")}
-                onCheckedChange={(checked) =>
-                  handleSetCategory(checked === true, "auto")
-                }
-              />
-              <FieldLabel htmlFor="auto" className="cursor-pointer">
-                Авто
-              </FieldLabel>
-            </Field>
-            <Field orientation="horizontal">
-              <Checkbox
-                id="electronics"
-                className="cursor-pointer"
-                checked={selectedCategories.includes("electronics")}
-                onCheckedChange={(checked) =>
-                  handleSetCategory(checked === true, "electronics")
-                }
-              />
-              <FieldLabel htmlFor="electronics" className="cursor-pointer">
-                Электроника
-              </FieldLabel>
-            </Field>
-            <Field orientation="horizontal">
-              <Checkbox
-                id="real_estate"
-                className="cursor-pointer"
-                checked={selectedCategories.includes("real_estate")}
-                onCheckedChange={(checked) =>
-                  handleSetCategory(checked === true, "real_estate")
-                }
-              />
-              <FieldLabel htmlFor="real_estate" className="cursor-pointer">
-                Недвижимость
-              </FieldLabel>
-            </Field>
-          </FieldGroup>
+    <div className="w-55">
+      <Card className="mb-4 h-fit pt-4">
+        <CardContent className="px-4">
+          <FieldSet>
+            <FieldLegend className="cursor-default">Фильтры</FieldLegend>
 
-          <FieldSeparator />
+            <FieldSet>
+              <FieldLegend variant="label" className="cursor-default">
+                Категории
+              </FieldLegend>
 
-          <Field orientation="horizontal" className="w-fit">
-            <Switch
-              id="needs-revision"
-              value="true"
-              className="cursor-pointer"
-              checked={needsRevisionParam === "true"}
-              onCheckedChange={handleSwitchChange}
-            />
-            <FieldLabel htmlFor="needs-revision" className="cursor-pointer">
-              Только требующие доработок
-            </FieldLabel>
-          </Field>
-        </FieldSet>
-      </CardContent>
-    </Card>
+              <FieldGroup className="gap-3">
+                <Field orientation="horizontal">
+                  <Checkbox
+                    id="auto"
+                    className="cursor-pointer"
+                    checked={selectedCategories.includes("auto")}
+                    onCheckedChange={(checked) =>
+                      handleSetCategory(checked === true, "auto")
+                    }
+                  />
+                  <FieldLabel htmlFor="auto" className="cursor-pointer">
+                    Авто
+                  </FieldLabel>
+                </Field>
+
+                <Field orientation="horizontal">
+                  <Checkbox
+                    id="electronics"
+                    className="cursor-pointer"
+                    checked={selectedCategories.includes("electronics")}
+                    onCheckedChange={(checked) =>
+                      handleSetCategory(checked === true, "electronics")
+                    }
+                  />
+                  <FieldLabel htmlFor="electronics" className="cursor-pointer">
+                    Электроника
+                  </FieldLabel>
+                </Field>
+
+                <Field orientation="horizontal">
+                  <Checkbox
+                    id="real_estate"
+                    className="cursor-pointer"
+                    checked={selectedCategories.includes("real_estate")}
+                    onCheckedChange={(checked) =>
+                      handleSetCategory(checked === true, "real_estate")
+                    }
+                  />
+                  <FieldLabel htmlFor="real_estate" className="cursor-pointer">
+                    Недвижимость
+                  </FieldLabel>
+                </Field>
+              </FieldGroup>
+            </FieldSet>
+
+            <FieldSeparator />
+
+            <Field orientation="horizontal" className="w-fit">
+              <Switch
+                id="needs-revision"
+                className="cursor-pointer"
+                checked={needsRevisionParam === "true"}
+                onCheckedChange={handleSwitchChange}
+              />
+              <FieldLabel htmlFor="needs-revision" className="cursor-pointer">
+                Только требующие доработок
+              </FieldLabel>
+            </Field>
+          </FieldSet>
+        </CardContent>
+      </Card>
+
+      <Button className="w-full" onClick={handleResetFilters}>
+        Сбросить фильтры
+      </Button>
+    </div>
   )
 }
