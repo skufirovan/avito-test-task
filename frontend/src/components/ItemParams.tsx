@@ -21,6 +21,10 @@ type Props = {
 }
 
 export function ItemParams({ category, params }: Props) {
+  if (Object.keys(params).length === 0) {
+    return <div>Не указаны</div>
+  }
+
   if (isAutoParams(params, category)) {
     return (
       <div className="space-y-2">

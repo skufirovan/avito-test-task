@@ -1,4 +1,4 @@
-import type { Category, GetItemsParams } from "@/api/types"
+import { isCategory, type Category, type GetItemsParams } from "@/api/types"
 
 export function parseSortColumn(
   value: string | null
@@ -21,9 +21,6 @@ export function parsePage(value: string | null): number {
 
   return page
 }
-
-const isCategory = (value: unknown): value is Category =>
-  value === "auto" || value === "real_estate" || value === "electronics"
 
 export function parseCategories(value: string): Category[] {
   return value.split(",").filter(isCategory)

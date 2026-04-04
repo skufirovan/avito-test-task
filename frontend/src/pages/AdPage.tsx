@@ -15,11 +15,13 @@ export function AdPage() {
   const { id } = useParams<{ id: string }>()
   const itemId = Number(id)
 
+  const { data, isLoading, isError, refetch } = useGetItemByIdQuery(itemId, {
+    skip: !Number.isInteger(itemId) || itemId < 1,
+  })
+
   if (!Number.isInteger(itemId) || itemId < 1) {
     return <NotFoundPage />
   }
-
-  const { data, isLoading, isError, refetch } = useGetItemByIdQuery(Number(id))
 
   if (isLoading) {
     return (
@@ -44,10 +46,12 @@ export function AdPage() {
   return (
     <div className="px-6 py-8">
       <div className="flex justify-between">
-        <Typography variant="h1" className="cursor-default text-3xl">
+        <Typography variant="h1" className="cursor-default text-left text-3xl">
           {data.title}
         </Typography>
-        <Typography variant="h2">{data.price.toLocaleString()} ₽</Typography>
+        <Typography variant="h2" className="min-w-max">
+          {data.price.toLocaleString()} ₽
+        </Typography>
       </div>
 
       <div className="mb-6 flex justify-between">

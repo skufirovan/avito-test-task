@@ -1,5 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import type { Item } from "@/api/types"
+import { itemCategoryConfig } from "./constants"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -58,5 +60,15 @@ export function formatDate(value: string) {
     year: "numeric",
     hour: "numeric",
     minute: "2-digit",
+  })
+}
+
+export function getMissingFields(item: Item) {
+  const config = itemCategoryConfig[item.category]
+
+  return config.fields.filter((field) => {
+    const params = item.params
+    const value = params[field.key as keyof typeof params]
+    return value === undefined || value === null || value === ""
   })
 }

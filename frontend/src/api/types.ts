@@ -13,24 +13,12 @@ export interface AutoItemParams {
   enginePower?: number
 }
 
-export const isAutoParams = (
-  params: unknown,
-  category: Category
-): params is AutoItemParams =>
-  category === "auto" && params !== null && typeof params === "object"
-
 export interface RealEstateItemParams {
   type?: RealEstateType
   address?: string
   area?: number
   floor?: number
 }
-
-export const isRealEstateParams = (
-  params: unknown,
-  category: Category
-): params is RealEstateItemParams =>
-  category === "real_estate" && params !== null && typeof params === "object"
 
 export interface ElectronicsItemParams {
   type?: ElectronicsType
@@ -40,22 +28,29 @@ export interface ElectronicsItemParams {
   color?: string
 }
 
-export const isElectronicsParams = (
-  params: unknown,
-  category: Category
-): params is ElectronicsItemParams =>
-  category === "electronics" && params !== null && typeof params === "object"
+export type ItemParamsByCategory = {
+  auto: AutoItemParams
+  real_estate: RealEstateItemParams
+  electronics: ElectronicsItemParams
+}
 
-export interface Item {
+export type ItemBase = {
   id: number
-  category: Category
   title: string
   description?: string
   price: number
   createdAt: string
   updatedAt: string
-  params: AutoItemParams | RealEstateItemParams | ElectronicsItemParams
 }
+
+export type ItemOfCategory<C extends Category> = ItemBase & {
+  category: C
+  params: ItemParamsByCategory[C]
+}
+
+export type Item = {
+  [C in Category]: ItemOfCategory<C>
+}[Category]
 
 export interface ListItem {
   id: number
@@ -87,3 +82,24 @@ export interface GetItemsParams {
   sortColumn?: "title" | "createdAt"
   sortDirection?: "asc" | "desc"
 }
+
+export const isCategory = (value: unknown): value is Category =>
+  value === "auto" || value === "real_estate" || value === "electronics"
+
+export const isAutoParams = (
+  params: unknown,
+  category: Category
+): params is AutoItemParams =>
+  category === "auto" && params !== null && typeof params === "object"
+
+export const isRealEstateParams = (
+  params: unknown,
+  category: Category
+): params is RealEstateItemParams =>
+  category === "real_estate" && params !== null && typeof params === "object"
+
+export const isElectronicsParams = (
+  params: unknown,
+  category: Category
+): params is ElectronicsItemParams =>
+  category === "electronics" && params !== null && typeof params === "object"
