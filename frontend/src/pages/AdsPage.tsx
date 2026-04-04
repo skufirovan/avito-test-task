@@ -7,8 +7,8 @@ import {
   ItemsList,
   SearchInput,
   SortDropdown,
+  Typography,
 } from "@/components"
-import { Typography } from "@/components/ui/Typography"
 import { useAdsSearchParams } from "@/hooks/useAdsSearchParams"
 import { ADS_PER_PAGE } from "@/lib/constants"
 import { useGetItemsQuery } from "@/store/api/itemsApi"

@@ -49,3 +49,14 @@ export const generatePagination = (
     totalPages,
   ]
 }
+
+export function formatDate(value: string) {
+  const date = new Date(value)
+  return date.toLocaleString("ru", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  })
+}

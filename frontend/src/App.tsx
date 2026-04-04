@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
-import { AdsPage, NotFoundPage } from "./pages"
+import { AdPage, AdsPage, NotFoundPage } from "./pages"
 
 export function App() {
   return (
@@ -7,6 +7,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/ads" />} />
         <Route path="/ads" element={<AdsPage />} />
+        <Route path="/ads/:id" element={<AdPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

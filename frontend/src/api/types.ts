@@ -1,28 +1,50 @@
 export type Category = "auto" | "real_estate" | "electronics"
+export type Transmission = "automatic" | "manual"
+export type RealEstateType = "flat" | "house" | "room"
+export type ElectronicsType = "phone" | "laptop" | "misc"
+export type ElectronicsCondition = "new" | "used"
 
 export interface AutoItemParams {
   brand?: string
   model?: string
   yearOfManufacture?: number
-  transmission?: "automatic" | "manual"
+  transmission?: Transmission
   mileage?: number
   enginePower?: number
 }
 
+export const isAutoParams = (
+  params: unknown,
+  category: Category
+): params is AutoItemParams =>
+  category === "auto" && params !== null && typeof params === "object"
+
 export interface RealEstateItemParams {
-  type?: "flat" | "house" | "room"
+  type?: RealEstateType
   address?: string
   area?: number
   floor?: number
 }
 
+export const isRealEstateParams = (
+  params: unknown,
+  category: Category
+): params is RealEstateItemParams =>
+  category === "real_estate" && params !== null && typeof params === "object"
+
 export interface ElectronicsItemParams {
-  type?: "phone" | "laptop" | "misc"
+  type?: ElectronicsType
   brand?: string
   model?: string
-  condition?: "new" | "used"
+  condition?: ElectronicsCondition
   color?: string
 }
+
+export const isElectronicsParams = (
+  params: unknown,
+  category: Category
+): params is ElectronicsItemParams =>
+  category === "electronics" && params !== null && typeof params === "object"
 
 export interface Item {
   id: number
