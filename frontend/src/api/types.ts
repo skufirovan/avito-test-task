@@ -34,23 +34,27 @@ export type ItemParamsByCategory = {
   electronics: ElectronicsItemParams
 }
 
-export type ItemBase = {
+export type Item = {
   id: number
   title: string
   description?: string
   price: number
   createdAt: string
   updatedAt: string
-}
-
-export type ItemOfCategory<C extends Category> = ItemBase & {
-  category: C
-  params: ItemParamsByCategory[C]
-}
-
-export type Item = {
-  [C in Category]: ItemOfCategory<C>
-}[Category]
+} & (
+  | {
+      category: "auto"
+      params: AutoItemParams
+    }
+  | {
+      category: "real_estate"
+      params: RealEstateItemParams
+    }
+  | {
+      category: "electronics"
+      params: ElectronicsItemParams
+    }
+)
 
 export interface ListItem {
   id: number

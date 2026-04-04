@@ -1,5 +1,5 @@
 import { MoveLeft } from "lucide-react"
-import { Link, useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import {
   ApiErrorState,
   Button,
@@ -7,19 +7,14 @@ import {
   Spinner,
   AdOverview,
 } from "@/components"
+import { useFetchAd } from "@/hooks/useFetchAd"
 import { formatDate } from "@/lib/utils"
-import { useGetItemByIdQuery } from "@/store/api/itemsApi"
 import { NotFoundPage } from "./NotFoundPage"
 
 export function AdPage() {
-  const { id } = useParams<{ id: string }>()
-  const itemId = Number(id)
+  const { data, isLoading, isError, refetch, isInvalidId } = useFetchAd()
 
-  const { data, isLoading, isError, refetch } = useGetItemByIdQuery(itemId, {
-    skip: !Number.isInteger(itemId) || itemId < 1,
-  })
-
-  if (!Number.isInteger(itemId) || itemId < 1) {
+  if (isInvalidId) {
     return <NotFoundPage />
   }
 

@@ -1,28 +1,30 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import * as z from "zod"
 import type { Item } from "@/api/types"
 import { itemCategoryConfig } from "./constants"
+import type { itemUpdateInSchema } from "./validation"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function getResultsWord(count: number) {
+export function getResultsWord(count: number, word?: string) {
   const lastDigit = count % 10
   const lastTwoDigits = count % 100
 
   if (lastDigit === 1 && lastTwoDigits !== 11) {
-    return "результат"
+    return word ?? "результат"
   }
 
   if (
     [2, 3, 4].includes(lastDigit) &&
     !(lastTwoDigits >= 12 && lastTwoDigits <= 14)
   ) {
-    return "результата"
+    return word ? word + "а" : "результата"
   }
 
-  return "результатов"
+  return word ? word + "ов" : "результатов"
 }
 
 export const generatePagination = (
@@ -71,4 +73,16 @@ export function getMissingFields(item: Item) {
     const value = params[field.key as keyof typeof params]
     return value === undefined || value === null || value === ""
   })
+}
+
+export function getItemFormDefaultValues(
+  item: Item
+): z.infer<typeof itemUpdateInSchema> {
+  return {
+    category: item.category,
+    title: item.title,
+    price: item.price,
+    description: item.description ?? "",
+    params: item.params,
+  } as z.infer<typeof itemUpdateInSchema>
 }

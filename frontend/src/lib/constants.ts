@@ -2,6 +2,12 @@ import type { Category, ItemParamsByCategory } from "@/api/types"
 
 export const ADS_PER_PAGE = 10
 
+export const ITEM_CATEGORIES = {
+  AUTO: "auto",
+  REAL_ESTATE: "real_estate",
+  ELECTRONICS: "electronics",
+} as const satisfies Record<string, Category>
+
 export const itemCategoryConfig = {
   auto: {
     fields: [
