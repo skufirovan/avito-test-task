@@ -1,7 +1,7 @@
+import { Card, CardHeader } from "./ui/Card"
 import { Skeleton } from "./ui/Skeleton"
-import { Card, CardHeader } from "./ui/Сard"
 
-export function CardItemSceleton() {
+export function CardItemSkeleton() {
   return (
     <Card className="relative w-xs pt-0">
       <div className="absolute inset-0 z-30 aspect-video bg-black/35" />

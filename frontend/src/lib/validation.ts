@@ -1,5 +1,11 @@
 import { z } from "zod"
-import { ITEM_CATEGORIES } from "./constants"
+import type { Category } from "@/api/types"
+
+export const CATEGORIES_ENUM = {
+  AUTO: "auto",
+  REAL_ESTATE: "real_estate",
+  ELECTRONICS: "electronics",
+} as const satisfies Record<string, Category>
 
 const autoTransmissionSchema = z.enum(["automatic", "manual"], {
   error: "Коробка передач должна быть автоматической или механической",
@@ -41,7 +47,7 @@ const electronicsConditionSchema = z.enum(["new", "used"], {
   error: "Состояние должно быть либо новым, либо БУ",
 })
 
-export const electronicsEstateItemParamsSchema = z.strictObject({
+export const electronicsItemParamsSchema = z.strictObject({
   type: electronicsTypeSchema,
   brand: z.string().trim().nonempty("Укажите бренд"),
   model: z.string().trim().nonempty("Укажите модель"),
@@ -49,7 +55,7 @@ export const electronicsEstateItemParamsSchema = z.strictObject({
   color: z.string().trim().nonempty("Укажите цвет"),
 })
 
-const categorySchema = z.enum(Object.values(ITEM_CATEGORIES), {
+const categorySchema = z.enum(Object.values(CATEGORIES_ENUM), {
   error: "Выберите категорию",
 })
 
@@ -63,16 +69,16 @@ export const itemUpdateInSchema = z
   .and(
     z.discriminatedUnion("category", [
       z.object({
-        category: z.literal(ITEM_CATEGORIES.AUTO),
+        category: z.literal(CATEGORIES_ENUM.AUTO),
         params: autoItemParamsSchema.partial(),
       }),
       z.object({
-        category: z.literal(ITEM_CATEGORIES.REAL_ESTATE),
+        category: z.literal(CATEGORIES_ENUM.REAL_ESTATE),
         params: realEstateItemParamsSchema.partial(),
       }),
       z.object({
-        category: z.literal(ITEM_CATEGORIES.ELECTRONICS),
-        params: electronicsEstateItemParamsSchema.partial(),
+        category: z.literal(CATEGORIES_ENUM.ELECTRONICS),
+        params: electronicsItemParamsSchema.partial(),
       }),
     ])
   )

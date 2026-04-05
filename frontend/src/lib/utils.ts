@@ -9,22 +9,25 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function getResultsWord(count: number, word?: string) {
+export function pluralizeRu(
+  count: number,
+  words: { one: string; few: string; many: string }
+) {
   const lastDigit = count % 10
   const lastTwoDigits = count % 100
 
   if (lastDigit === 1 && lastTwoDigits !== 11) {
-    return word ?? "результат"
+    return words.one
   }
 
   if (
     [2, 3, 4].includes(lastDigit) &&
     !(lastTwoDigits >= 12 && lastTwoDigits <= 14)
   ) {
-    return word ? word + "а" : "результата"
+    return words.few
   }
 
-  return word ? word + "ов" : "результатов"
+  return words.many
 }
 
 export const generatePagination = (

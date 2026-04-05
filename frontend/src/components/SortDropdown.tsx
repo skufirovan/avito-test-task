@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import type { GetItemsParams } from "@/api/types"
 import {
   Combobox,
@@ -22,26 +22,48 @@ const options: Option[] = [
 ]
 
 export function SortDropdown() {
-  const [searchParams] = useSearchParams()
-  const location = useLocation()
-  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const currentSortColumn = searchParams.get(
+    "sortColumn"
+  ) as GetItemsParams["sortColumn"]
+  const currentSortDirection = searchParams.get(
+    "sortDirection"
+  ) as GetItemsParams["sortDirection"]
+
+  const currentValue =
+    options.find(
+      (opt) =>
+        opt.sortColumn === currentSortColumn &&
+        opt.sortDirection === currentSortDirection
+    ) || null
 
   const onValueChange = (value: Option | null) => {
-    const params = new URLSearchParams(searchParams)
+    setSearchParams(
+      (prev) => {
+        const params = new URLSearchParams(prev)
 
-    if (value) {
-      params.set("sortColumn", value.sortColumn)
-      params.set("sortDirection", value.sortDirection)
-    } else if (!value) {
-      params.delete("sortColumn")
-      params.delete("sortDirection")
-    }
+        if (value) {
+          params.set("sortColumn", value.sortColumn)
+          params.set("sortDirection", value.sortDirection)
+        } else {
+          params.delete("sortColumn")
+          params.delete("sortDirection")
+        }
 
-    navigate(`${location.pathname}?${params.toString()}`, { replace: true })
+        params.delete("page")
+        return params
+      },
+      { replace: true }
+    )
   }
 
   return (
-    <Combobox items={options} onValueChange={onValueChange}>
+    <Combobox
+      items={options}
+      onValueChange={onValueChange}
+      defaultValue={currentValue}
+    >
       <ComboboxInput placeholder="Сортировать по" className="w-45" />
       <ComboboxContent>
         <ComboboxEmpty>Ничего не найдено</ComboboxEmpty>

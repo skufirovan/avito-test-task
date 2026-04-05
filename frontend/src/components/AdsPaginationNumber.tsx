@@ -27,7 +27,7 @@ export function AdsPaginationNumber({
 
   return (
     <PaginationItem>
-      <PaginationLink href={href} isActive={isActive}>
+      <PaginationLink to={href} isActive={isActive}>
         {page}
       </PaginationLink>
     </PaginationItem>

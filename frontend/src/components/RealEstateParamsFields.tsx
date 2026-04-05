@@ -1,20 +1,8 @@
-import { Controller, type Control } from "react-hook-form"
-import {
-  Field,
-  FieldContent,
-  FieldError,
-  FieldLabel,
-} from "@/components/ui/Field"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/Select"
+import { type Control } from "react-hook-form"
 import { realEstateTypeMapper } from "@/lib/mappers"
 import type { FormValues } from "./AdEditForm"
-import { FormFieldController } from "./FormFieldController"
+import { InputFieldController } from "./InputFieldController"
+import { SelectFieldController } from "./SelectFieldController"
 
 type Props = {
   control: Control<FormValues>
@@ -23,48 +11,23 @@ type Props = {
 export function RealEstateParamsFields({ control }: Props) {
   return (
     <>
-      <Controller
-        name="params.type"
+      <SelectFieldController
         control={control}
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldContent>
-              <FieldLabel htmlFor="form-real-estate-type">Тип</FieldLabel>
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </FieldContent>
-
-            <Select
-              name={field.name}
-              value={field.value}
-              onValueChange={field.onChange}
-            >
-              <SelectTrigger
-                id="form-real-estate-type"
-                aria-invalid={fieldState.invalid}
-              >
-                <SelectValue placeholder="Выбери тип недвижимости" />
-              </SelectTrigger>
-
-              <SelectContent position="item-aligned">
-                {Object.entries(realEstateTypeMapper).map(([key, value]) => (
-                  <SelectItem key={key} value={key}>
-                    {value}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </Field>
-        )}
+        name="params.type"
+        label="Тип"
+        id="form-real-estate-type"
+        placeholder="Выберите тип недвижимости"
+        options={realEstateTypeMapper}
       />
 
-      <FormFieldController
+      <InputFieldController
         control={control}
         name="params.address"
         label="Адрес"
         id="form-real-estate-address"
       />
 
-      <FormFieldController
+      <InputFieldController
         control={control}
         name="params.area"
         label="Площадь"
@@ -72,7 +35,7 @@ export function RealEstateParamsFields({ control }: Props) {
         type="number"
       />
 
-      <FormFieldController
+      <InputFieldController
         control={control}
         name="params.floor"
         label="Этаж"

@@ -28,12 +28,12 @@ export function AdsPagination({ totalPages }: Props) {
   const allPages = generatePagination(currentPage, totalPages)
 
   return (
-    <Pagination>
+    <Pagination className="mt-4">
       <PaginationContent>
         {currentPage > 1 && (
           <PaginationItem>
             <PaginationPrevious
-              href={createPageURL(currentPage - 1)}
+              to={createPageURL(currentPage - 1)}
               text="Назад"
             />
           </PaginationItem>
@@ -53,10 +53,7 @@ export function AdsPagination({ totalPages }: Props) {
 
         {currentPage < totalPages && (
           <PaginationItem>
-            <PaginationNext
-              href={createPageURL(currentPage + 1)}
-              text="Далее"
-            />
+            <PaginationNext to={createPageURL(currentPage + 1)} text="Далее" />
           </PaginationItem>
         )}
       </PaginationContent>

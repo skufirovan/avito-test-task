@@ -1,23 +1,11 @@
-import { Controller, type Control } from "react-hook-form"
-import {
-  Field,
-  FieldContent,
-  FieldError,
-  FieldLabel,
-} from "@/components/ui/Field"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/Select"
+import { type Control } from "react-hook-form"
 import {
   electronicsConditionMapper,
   electronicsTypeMapper,
 } from "@/lib/mappers"
 import type { FormValues } from "./AdEditForm"
-import { FormFieldController } from "./FormFieldController"
+import { InputFieldController } from "./InputFieldController"
+import { SelectFieldController } from "./SelectFieldController"
 
 type Props = {
   control: Control<FormValues>
@@ -26,93 +14,39 @@ type Props = {
 export function ElectronicsParamsFields({ control }: Props) {
   return (
     <>
-      <Controller
-        name="params.type"
+      <SelectFieldController
         control={control}
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldContent>
-              <FieldLabel htmlFor="form-electronics-type">Тип</FieldLabel>
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </FieldContent>
-
-            <Select
-              name={field.name}
-              value={field.value}
-              onValueChange={field.onChange}
-            >
-              <SelectTrigger
-                id="form-electronics-type"
-                aria-invalid={fieldState.invalid}
-              >
-                <SelectValue placeholder="Выбери тип устройства" />
-              </SelectTrigger>
-
-              <SelectContent position="item-aligned">
-                {Object.entries(electronicsTypeMapper).map(([key, value]) => (
-                  <SelectItem key={key} value={key}>
-                    {value}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </Field>
-        )}
+        name="params.type"
+        label="Тип"
+        id="form-electronics-type"
+        placeholder="Выберите тип устройства"
+        options={electronicsTypeMapper}
       />
 
-      <FormFieldController
+      <InputFieldController
         control={control}
         name="params.brand"
         label="Бренд"
         id="form-electronics-brand"
       />
 
-      <FormFieldController
+      <InputFieldController
         control={control}
         name="params.model"
         label="Модель"
         id="form-electronics-model"
       />
 
-      <Controller
-        name="params.condition"
+      <SelectFieldController
         control={control}
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldContent>
-              <FieldLabel htmlFor="form-electronics-condition">
-                Состояние
-              </FieldLabel>
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </FieldContent>
-
-            <Select
-              name={field.name}
-              value={field.value}
-              onValueChange={field.onChange}
-            >
-              <SelectTrigger
-                id="form-electronics-condition"
-                aria-invalid={fieldState.invalid}
-              >
-                <SelectValue placeholder="Выбери состояние" />
-              </SelectTrigger>
-
-              <SelectContent position="item-aligned">
-                {Object.entries(electronicsConditionMapper).map(
-                  ([key, value]) => (
-                    <SelectItem key={key} value={key}>
-                      {value}
-                    </SelectItem>
-                  )
-                )}
-              </SelectContent>
-            </Select>
-          </Field>
-        )}
+        name="params.condition"
+        label="Состояние"
+        id="form-electronics-condition"
+        placeholder="Выберите состояние"
+        options={electronicsConditionMapper}
       />
 
-      <FormFieldController
+      <InputFieldController
         control={control}
         name="params.color"
         label="Цвет"

@@ -1,7 +1,8 @@
 import { Search } from "lucide-react"
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useSearchParams } from "react-router-dom"
 import { useDebouncedCallback } from "use-debounce"
-import { getResultsWord } from "@/lib/utils"
+import { pluralizeRu } from "@/lib/utils"
 import { InputGroup, InputGroupInput, InputGroupAddon } from "./ui/InputGroup"
 
 type Props = {
@@ -10,9 +11,13 @@ type Props = {
 }
 
 export function SearchInput({ total }: Props) {
-  const [searchParams] = useSearchParams()
-  const location = useLocation()
-  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [value, setValue] = useState(() => searchParams.get("q") || "")
+
+  useEffect(() => {
+    const q = searchParams.get("q") || ""
+    setValue(q)
+  }, [searchParams])
 
   const handleSearch = useDebouncedCallback((term: string) => {
     const params = new URLSearchParams(searchParams)
@@ -21,14 +26,17 @@ export function SearchInput({ total }: Props) {
     } else {
       params.delete("q")
     }
-    navigate(`${location.pathname}?${params.toString()}`, { replace: true })
+    params.delete("page")
+    setSearchParams(params, { replace: true })
   }, 300)
 
   return (
     <InputGroup className="max-w-md">
       <InputGroupInput
         placeholder="Найти объявление..."
+        value={value}
         onChange={(e) => {
+          setValue(e.target.value)
           handleSearch(e.target.value)
         }}
         defaultValue={searchParams.get("q")?.toString()}
@@ -38,7 +46,12 @@ export function SearchInput({ total }: Props) {
       </InputGroupAddon>
       {total ? (
         <InputGroupAddon align="inline-end">
-          {total} {getResultsWord(total)}
+          {total}{" "}
+          {pluralizeRu(total, {
+            one: "результат",
+            few: "результата",
+            many: "результатов",
+          })}
         </InputGroupAddon>
       ) : undefined}
     </InputGroup>

@@ -20,7 +20,9 @@ export function AdsPage() {
 
   useEffect(() => {
     normalizeUrl()
+  }, [normalizeUrl])
 
+  useEffect(() => {
     if (!data) return
 
     const totalPages = Math.max(1, Math.ceil(data.total / ADS_PER_PAGE))
@@ -30,7 +32,7 @@ export function AdsPage() {
       params.set("page", totalPages.toString())
       setSearchParams(params, { replace: true })
     }
-  }, [normalizeUrl, browserParams.page, data, searchParams, setSearchParams])
+  }, [data, browserParams.page, searchParams, setSearchParams])
 
   if (isError) {
     return (

@@ -1,21 +1,8 @@
 import type { Control } from "react-hook-form"
-import { Controller } from "react-hook-form"
-import {
-  Field,
-  FieldContent,
-  FieldError,
-  FieldLabel,
-} from "@/components/ui/Field"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/Select"
 import { transmissionMapper } from "@/lib/mappers"
 import type { FormValues } from "./AdEditForm"
-import { FormFieldController } from "./FormFieldController"
+import { InputFieldController } from "./InputFieldController"
+import { SelectFieldController } from "./SelectFieldController"
 
 type Props = {
   control: Control<FormValues>
@@ -24,21 +11,21 @@ type Props = {
 export function AutoParamsFields({ control }: Props) {
   return (
     <>
-      <FormFieldController
+      <InputFieldController
         control={control}
         name="params.brand"
         label="Бренд"
         id="form-auto-brand"
       />
 
-      <FormFieldController
+      <InputFieldController
         control={control}
         name="params.model"
         label="Модель"
         id="form-auto-model"
       />
 
-      <FormFieldController
+      <InputFieldController
         control={control}
         name="params.yearOfManufacture"
         label="Год выпуска"
@@ -46,41 +33,16 @@ export function AutoParamsFields({ control }: Props) {
         type="number"
       />
 
-      <Controller
-        name="params.transmission"
+      <SelectFieldController
         control={control}
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldContent>
-              <FieldLabel htmlFor="form-auto-transmission">КПП</FieldLabel>
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </FieldContent>
-
-            <Select
-              name={field.name}
-              value={field.value}
-              onValueChange={field.onChange}
-            >
-              <SelectTrigger
-                id="form-auto-transmission"
-                aria-invalid={fieldState.invalid}
-              >
-                <SelectValue placeholder="Выберите тип КПП" />
-              </SelectTrigger>
-
-              <SelectContent position="item-aligned">
-                {Object.entries(transmissionMapper).map(([key, value]) => (
-                  <SelectItem key={key} value={key}>
-                    {value}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </Field>
-        )}
+        name="params.transmission"
+        label="КПП"
+        id="form-auto-transmission"
+        placeholder="Выберите тип КПП"
+        options={transmissionMapper}
       />
 
-      <FormFieldController
+      <InputFieldController
         control={control}
         name="params.mileage"
         label="Пробег"
@@ -88,7 +50,7 @@ export function AutoParamsFields({ control }: Props) {
         type="number"
       />
 
-      <FormFieldController
+      <InputFieldController
         control={control}
         name="params.enginePower"
         label="Мощность"

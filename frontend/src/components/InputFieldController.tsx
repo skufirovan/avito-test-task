@@ -10,7 +10,7 @@ type Props<T extends Record<string, unknown>> = {
   type?: "text" | "number"
 }
 
-export function FormFieldController<T extends Record<string, unknown>>({
+export function InputFieldController<T extends Record<string, unknown>>({
   control,
   name,
   label,

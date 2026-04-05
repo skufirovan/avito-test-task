@@ -1,6 +1,6 @@
 import type { ListItem } from "@/api/types"
 import { CardItem } from "./CardItem"
-import { CardItemSceleton } from "./CardItemSceleton"
+import { CardItemSkeleton } from "./CardItemSkeleton"
 import { Typography } from "./ui/Typography"
 
 type Props = {
@@ -16,7 +16,7 @@ export function ItemsList({ items, isLoading }: Props) {
     return (
       <div className={className}>
         {Array.from({ length: 6 }).map((_, index) => (
-          <CardItemSceleton key={index} />
+          <CardItemSkeleton key={index} />
         ))}
       </div>
     )

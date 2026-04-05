@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 import type { ListItem } from "@/api/types"
 import { categoryMapper } from "@/lib/mappers"
 import { Badge } from "./ui/Badge"
-import { Item, ItemMedia, ItemContent, ItemTitle } from "./ui/Item"
 import {
   Card,
   CardHeader,
@@ -11,7 +10,8 @@ import {
   CardTitle,
   CardDescription,
   CardFooter,
-} from "./ui/Сard"
+} from "./ui/Card"
+import { Item, ItemMedia, ItemContent, ItemTitle } from "./ui/Item"
 
 type Props = {
   item: ListItem

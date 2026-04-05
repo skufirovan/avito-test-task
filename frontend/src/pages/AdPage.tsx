@@ -51,14 +51,14 @@ export function AdPage() {
 
       <div className="mb-6 flex justify-between">
         <div className="flex gap-1">
-          <Link to="/ads">
-            <Button size="icon-lg">
+          <Button asChild size="icon-lg">
+            <Link to="/ads">
               <MoveLeft />
-            </Button>
-          </Link>
-          <Link to={`/ads/${data.id}/edit`}>
-            <Button size="lg">Редактировать</Button>
-          </Link>
+            </Link>
+          </Button>
+          <Button asChild size="lg">
+            <Link to={`/ads/${data.id}/edit`}>Редактировать</Link>
+          </Button>
         </div>
 
         <div className="flex flex-col items-end">

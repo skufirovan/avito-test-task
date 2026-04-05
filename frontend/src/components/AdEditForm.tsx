@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import * as z from "zod"
 import type { Item } from "@/api/types"
 import { categoryMapper } from "@/lib/mappers"
-import { getItemFormDefaultValues, getResultsWord } from "@/lib/utils"
+import { getItemFormDefaultValues, pluralizeRu } from "@/lib/utils"
 import { itemUpdateInSchema } from "@/lib/validation"
 import { useUpdateItemMutation } from "@/store/api/itemsApi"
 import { AdParamsFields } from "./AdParamsFields"
@@ -134,7 +134,10 @@ export function AdEditForm({ item }: Props) {
                 type="number"
                 inputMode="numeric"
                 value={field.value ?? ""}
-                onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                onChange={(e) => {
+                  const value = e.target.value
+                  field.onChange(value === "" ? undefined : Number(value))
+                }}
                 aria-invalid={fieldState.invalid}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -161,7 +164,11 @@ export function AdEditForm({ item }: Props) {
                 <InputGroupAddon align="block-end">
                   <InputGroupText className="tabular-nums">
                     {field.value!.length}{" "}
-                    {getResultsWord(field.value!.length, "символ")}
+                    {pluralizeRu((field.value ?? "").length, {
+                      one: "символ",
+                      few: "символа",
+                      many: "символов",
+                    })}
                   </InputGroupText>
                 </InputGroupAddon>
               </InputGroup>
@@ -172,15 +179,14 @@ export function AdEditForm({ item }: Props) {
 
         <Field orientation="horizontal" className="gap-3">
           <FieldError errors={[form.formState.errors.root]} />
-          <Link to={`/ads/${item.id}`}>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => form.reset()}
-            >
-              Отменить
-            </Button>
-          </Link>
+          <Button
+            asChild
+            type="button"
+            variant="outline"
+            onClick={() => form.reset()}
+          >
+            <Link to={`/ads/${item.id}`}>Отменить</Link>
+          </Button>
           <Button type="submit" form="ad-edit-form" disabled={isLoading}>
             Сохранить
           </Button>

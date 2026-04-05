@@ -1,5 +1,9 @@
 import { useSearchParams } from "react-router-dom"
+import type { Category } from "@/api/types"
+import { categoryMapper } from "@/lib/mappers"
+import { parseCategories } from "@/lib/parsers"
 import { Button } from "./ui/Button"
+import { Card, CardContent } from "./ui/Card"
 import { Checkbox } from "./ui/Checkbox"
 import {
   FieldGroup,
@@ -10,13 +14,14 @@ import {
   FieldLabel,
 } from "./ui/Field"
 import { Switch } from "./ui/Switch"
-import { Card, CardContent } from "./ui/Сard"
+
+const CATEGORY_VALUES: Category[] = ["auto", "electronics", "real_estate"]
 
 export function FiltersSidebar() {
   const [searchParams, setSearchParams] = useSearchParams()
   const needsRevisionParam = searchParams.get("needsRevision")
   const categoriesParam = searchParams.get("categories")
-  const selectedCategories = categoriesParam ? categoriesParam.split(",") : []
+  const selectedCategories = parseCategories(categoriesParam ?? "")
 
   const handleSwitchChange = (checked: boolean) => {
     setSearchParams(
@@ -93,47 +98,21 @@ export function FiltersSidebar() {
               </FieldLegend>
 
               <FieldGroup className="gap-3">
-                <Field orientation="horizontal">
-                  <Checkbox
-                    id="auto"
-                    className="cursor-pointer"
-                    checked={selectedCategories.includes("auto")}
-                    onCheckedChange={(checked) =>
-                      handleSetCategory(checked === true, "auto")
-                    }
-                  />
-                  <FieldLabel htmlFor="auto" className="cursor-pointer">
-                    Авто
-                  </FieldLabel>
-                </Field>
-
-                <Field orientation="horizontal">
-                  <Checkbox
-                    id="electronics"
-                    className="cursor-pointer"
-                    checked={selectedCategories.includes("electronics")}
-                    onCheckedChange={(checked) =>
-                      handleSetCategory(checked === true, "electronics")
-                    }
-                  />
-                  <FieldLabel htmlFor="electronics" className="cursor-pointer">
-                    Электроника
-                  </FieldLabel>
-                </Field>
-
-                <Field orientation="horizontal">
-                  <Checkbox
-                    id="real_estate"
-                    className="cursor-pointer"
-                    checked={selectedCategories.includes("real_estate")}
-                    onCheckedChange={(checked) =>
-                      handleSetCategory(checked === true, "real_estate")
-                    }
-                  />
-                  <FieldLabel htmlFor="real_estate" className="cursor-pointer">
-                    Недвижимость
-                  </FieldLabel>
-                </Field>
+                {CATEGORY_VALUES.map((value) => (
+                  <Field key={value} orientation="horizontal">
+                    <Checkbox
+                      id={value}
+                      className="cursor-pointer"
+                      checked={selectedCategories.includes(value)}
+                      onCheckedChange={(checked) =>
+                        handleSetCategory(checked === true, value)
+                      }
+                    />
+                    <FieldLabel htmlFor={value} className="cursor-pointer">
+                      {categoryMapper[value]}
+                    </FieldLabel>
+                  </Field>
+                ))}
               </FieldGroup>
             </FieldSet>
 
