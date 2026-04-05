@@ -89,3 +89,13 @@ export const ItemUpdateInSchema = z
   );
 
 export type ItemUpdateInput = z.infer<typeof ItemUpdateInSchema>;
+
+const PriceSuggestionSchema = z.object({
+  title: z.string(),
+  price: z.number().int().nonnegative(),
+});
+
+export const PriceSuggestionResultSchema = z.object({
+  summary: z.string(),
+  suggestions: z.array(PriceSuggestionSchema),
+});

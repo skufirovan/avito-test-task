@@ -1,5 +1,7 @@
+import "dotenv/config";
 import Fastify from "fastify";
-import { itemsRoutes } from "src/items/items.routes.ts";
+import { aiRoutes } from "./src/ai/ai.routes.ts";
+import { itemsRoutes } from "./src/items/items.routes.ts";
 
 const fastify = Fastify({
   logger: true,
@@ -28,8 +30,9 @@ fastify.use((_, reply, next) => {
 });
 
 fastify.register(itemsRoutes);
+fastify.register(aiRoutes);
 
-const port = 8080;
+const port = Number(process.env.APP_PORT) || 3000;
 
 fastify.listen({ port }, function (err, _address) {
   if (err) {
