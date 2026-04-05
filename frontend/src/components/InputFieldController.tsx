@@ -31,21 +31,19 @@ export function InputFieldController<T extends Record<string, unknown>>({
           <Field data-invalid={fieldState.invalid}>
             <FieldLabel htmlFor={id}>{label}</FieldLabel>
             <Input
+              {...field}
               id={id}
               type={type}
               value={inputValue}
-              onBlur={field.onBlur}
-              name={field.name}
-              ref={field.ref}
               onChange={(event) => {
                 const value = event.target.value
 
                 if (type === "number") {
-                  field.onChange(value === "" ? undefined : Number(value))
+                  field.onChange(value === "" ? "" : Number(value))
                   return
                 }
 
-                field.onChange(value === "" ? undefined : value)
+                field.onChange(value === "" ? "" : value)
               }}
               aria-invalid={fieldState.invalid}
             />

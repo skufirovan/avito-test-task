@@ -132,11 +132,10 @@ export function AdEditForm({ item }: Props) {
                 {...field}
                 id="form-price"
                 type="number"
-                inputMode="numeric"
                 value={field.value ?? ""}
                 onChange={(e) => {
                   const value = e.target.value
-                  field.onChange(value === "" ? undefined : Number(value))
+                  field.onChange(value === "" ? "" : Number(value))
                 }}
                 aria-invalid={fieldState.invalid}
               />
