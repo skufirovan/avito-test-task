@@ -87,6 +87,20 @@ export interface GetItemsParams {
   sortDirection?: "asc" | "desc"
 }
 
+export type GenerateDescriptionResponse = {
+  suggestedDescription: string
+}
+
+export type PriceSuggestion = {
+  title: string
+  price: number
+}
+
+export type SuggestPricesResponse = {
+  summary: string
+  suggestions: [PriceSuggestion, PriceSuggestion, PriceSuggestion]
+}
+
 export const isCategory = (value: unknown): value is Category =>
   value === "auto" || value === "real_estate" || value === "electronics"
 

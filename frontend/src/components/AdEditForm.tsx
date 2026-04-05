@@ -4,10 +4,12 @@ import { Link, useNavigate } from "react-router-dom"
 import * as z from "zod"
 import type { Item } from "@/api/types"
 import { categoryMapper } from "@/lib/mappers"
-import { getItemFormDefaultValues, pluralizeRu } from "@/lib/utils"
+import { getItemFormDefaultValues } from "@/lib/utils"
 import { itemUpdateInSchema } from "@/lib/validation"
 import { useUpdateItemMutation } from "@/store/api/itemsApi"
 import { AdParamsFields } from "./AdParamsFields"
+import { DescriptionField } from "./DescriptionField"
+import { PriceField } from "./PriceField"
 import { Button } from "./ui/Button"
 import {
   Field,
@@ -17,12 +19,6 @@ import {
   FieldLabel,
 } from "./ui/Field"
 import { Input } from "./ui/Input"
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroupTextarea,
-} from "./ui/InputGroup"
 import {
   Select,
   SelectContent,
@@ -122,58 +118,20 @@ export function AdEditForm({ item }: Props) {
           )}
         />
 
-        <Controller
-          name="price"
+        <PriceField
           control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-price">Цена</FieldLabel>
-              <Input
-                {...field}
-                id="form-price"
-                type="number"
-                value={field.value ?? ""}
-                onChange={(e) => {
-                  const value = e.target.value
-                  field.onChange(value === "" ? "" : Number(value))
-                }}
-                aria-invalid={fieldState.invalid}
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
+          setValue={form.setValue}
+          name="price"
+          itemId={item.id}
         />
 
         <AdParamsFields control={form.control} category={category} />
 
-        <Controller
-          name="description"
+        <DescriptionField
           control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-description">Описание</FieldLabel>
-              <InputGroup>
-                <InputGroupTextarea
-                  {...field}
-                  id="form-description"
-                  rows={6}
-                  className="min-h-24 resize-none"
-                  aria-invalid={fieldState.invalid}
-                />
-                <InputGroupAddon align="block-end">
-                  <InputGroupText className="tabular-nums">
-                    {field.value!.length}{" "}
-                    {pluralizeRu((field.value ?? "").length, {
-                      one: "символ",
-                      few: "символа",
-                      many: "символов",
-                    })}
-                  </InputGroupText>
-                </InputGroupAddon>
-              </InputGroup>
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
+          setValue={form.setValue}
+          name="description"
+          itemId={item.id}
         />
 
         <Field orientation="horizontal" className="gap-3">

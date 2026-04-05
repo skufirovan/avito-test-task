@@ -1,9 +1,11 @@
 import { baseApi } from "@/api/baseApi"
 import type {
+  GenerateDescriptionResponse,
   GetItemsParams,
   GetItemsResponse,
   Item,
   ItemUpdateIn,
+  SuggestPricesResponse,
 } from "@/api/types"
 import { ADS_PER_PAGE } from "@/lib/constants"
 
@@ -52,8 +54,30 @@ export const itemsApi = baseApi.injectEndpoints({
         { type: "Items", id: "LIST" },
       ],
     }),
+
+    generateItemDescription: builder.mutation<
+      GenerateDescriptionResponse,
+      number
+    >({
+      query: (id) => ({
+        url: `/items/${id}/ai-description`,
+        method: "POST",
+      }),
+    }),
+
+    suggestItemPrices: builder.mutation<SuggestPricesResponse, number>({
+      query: (id) => ({
+        url: `/items/${id}/ai-price`,
+        method: "POST",
+      }),
+    }),
   }),
 })
 
-export const { useGetItemsQuery, useGetItemByIdQuery, useUpdateItemMutation } =
-  itemsApi
+export const {
+  useGetItemsQuery,
+  useGetItemByIdQuery,
+  useUpdateItemMutation,
+  useGenerateItemDescriptionMutation,
+  useSuggestItemPricesMutation,
+} = itemsApi
